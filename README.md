@@ -29,38 +29,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ### Clarifications 
-`***SceneSetup.vue`*** 
-
-handleWindowResize()
-
-initializeScene()
-
-*setupRenderer()*
-
-*loadEnvironment()*
-
-`**LightingSetup.vue`** 
-
-*setupLights()*
-
-*updateHDR()*
-
-*updateHDRIntensity()*
-
-`**EnvironmentSetup.vue**`
-
-*loadFloor()*
-
-*updateFloorColor()*
-
-*updateFloor()*
-
-*updateSkyboxMaterial()*
-
-*loadSkybox()*
-
-*updateSkybox()*
-
 I use Vue 3 and Vuetify.
 
 App.vue is a parent to 3DviewerComponen.vue, PriceQuotationConponent.vue,  FileUploadComponent.vue, ChangeElementeComponent.vue
