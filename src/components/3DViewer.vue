@@ -13,7 +13,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 
 
 export default {
-  name: '3DViewerComponent',
+  name: '3DViewer',
   props: {
     updateLights: Function,
     updateEnvironment: Function,

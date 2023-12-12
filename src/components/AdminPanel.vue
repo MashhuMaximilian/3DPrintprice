@@ -79,84 +79,91 @@
 </div>
 </template>
 
-
 <script>
+import { ref, watch } from 'vue';
+
 export default {
-  name: 'ChangeElementsComponent',
-  data() {
-    return {
-      showColorPicker: false,
-      skyboxColorInput: '#333333',
-      floorColorInput: '#333333', // Add a data property for floor color
-      floors: ['pinkfloor1.glb', 'pinkfloor2.glb', 'bathroomfloor.glb', 'scififloor.glb'],
-      currentFloorIndex: 0,
-      isHDREnabled: true,
-      isFloorVisible: true,
-      skyboxMetalness: 0.5, // Default value or initial value
-      skyboxRoughness: 0.3,
-      skyboxClearcoat: 0.9,
-      skyboxClearcoatRoughness: 0.2,
-      skyboxReflectivity: 0.5,
+  name: 'AdminPanel',
+  setup(_, { emit }) {
+    // Refactored reactive state
+    const skyboxColorInput = ref('#333333');
+    const floorColorInput = ref('#333333');
+    const currentFloorIndex = ref(0);
+    const isHDREnabled = ref(true);
+    const isFloorVisible = ref(true);
+    const skyboxMetalness = ref(0.5);
+    const skyboxRoughness = ref(0.3);
+    const skyboxClearcoat = ref(0.9);
+    const skyboxClearcoatRoughness = ref(0.2);
+    const skyboxReflectivity = ref(0.5);
+
+    const floors = ['pinkfloor1.glb', 'pinkfloor2.glb', 'bathroomfloor.glb', 'scififloor.glb'];
+
+    // Methods
+    const emitSkyboxPropertyChange = (property, value) => {
+      emit('changeSkyboxProperty', { property, value });
     };
-  },
-  methods: {
 
-    emitSkyboxPropertyChange(property, value) {
-    this.$emit('changeSkyboxProperty', { property, value });
-    console.log('emitted properties skybox')
-  },
+    const toggleHDR = () => {
+      emit('toggle-hdr', isHDREnabled.value);
+    };
 
-    toggleHDR() {
-      this.$emit('toggle-hdr', this.isHDREnabled);
-    },
-    toggleFloor() {
-      this.$emit('toggle-floor', this.isFloorVisible);
-    },
+    const toggleFloor = () => {
+      emit('toggle-floor', isFloorVisible.value);
+    };
 
-    changeHDR() {
-      this.$emit('changeHdr');
-    },
-    changeFloor() {
-// Update the current floor index
-this.currentFloorIndex = (this.currentFloorIndex + 1) % this.floors.length;
-// Emit the changeFloor event with the selected floor identifier
-this.$emit('changeFloor', this.floors[this.currentFloorIndex]);
-},
+    const changeHDR = () => {
+      emit('changeHdr');
+    };
 
-changeFloorType() {
-  // Emit the changeFloor event when the button is clicked
-  this.$emit('changeFloor');
-},
-    changeSkybox() {
-      this.$emit('changeSkybox');
-    },
-    // No changes needed here, continue emitting the color change event
-  // Emit the changeSkyboxColor event when the button is clicked
-  changeSkyboxColor() {
-  // Get the color value from the input field (skyboxColorInput)
-  const colorHex = this.skyboxColorInput || "#e8e8e8"; // Use the input value or default to black
+    const changeFloor = () => {
+      currentFloorIndex.value = (currentFloorIndex.value + 1) % floors.length;
+      emit('changeFloor', floors[currentFloorIndex.value]);
+    };
 
-  // Emit the changeSkyboxColor event with the selected color
-  this.$emit("changeSkyboxColor", colorHex);
-},
+    const changeSkybox = () => {
+      emit('changeSkybox');
+    };
 
-// Emit the changeFloorColor event when the button is clicked
-},
-watch: {
-  floorColorInput(newColor) {
-    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(newColor)) {
-      // Valid hex code
-      this.$emit("changeFloorColor", newColor);
-    } else {
-      console.warn('Invalid floor color hex:', newColor);
-    }
-  },
+    const changeSkyboxColor = () => {
+      const colorHex = skyboxColorInput.value || "#e8e8e8";
+      emit("changeSkyboxColor", colorHex);
+    };
 
-  skyboxColorInput(newValue) {
-      this.$emit('changeSkyboxColor', newValue); // Automatically emit color change for skybox
-    },
-},
-  };
+    // Watchers
+    watch(floorColorInput, (newColor) => {
+      if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(newColor)) {
+        emit("changeFloorColor", newColor);
+      } else {
+        console.warn('Invalid floor color hex:', newColor);
+      }
+    });
+
+    watch(skyboxColorInput, (newValue) => {
+      emit('changeSkyboxColor', newValue);
+    });
+
+    // Return reactive state and methods
+    return {
+      skyboxColorInput,
+      floorColorInput,
+      isHDREnabled,
+      isFloorVisible,
+      skyboxMetalness,
+      skyboxRoughness,
+      skyboxClearcoat,
+      skyboxClearcoatRoughness,
+      skyboxReflectivity,
+      emitSkyboxPropertyChange,
+      toggleHDR,
+      toggleFloor,
+      changeHDR,
+      changeFloor,
+      changeSkybox,
+      changeSkyboxColor
+    };
+  }
+};
 </script>
 
 <style>

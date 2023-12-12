@@ -19,7 +19,7 @@ ref="viewer"
 ></viewer-component>
 </v-card>
             <v-card>
-              <ChangeElementsComponent 
+              <AdminPanel
               @changeSkybox="handleChangeSkybox"
               @changeHdr="handleChangeHDR"
               @changeFloor="handleChangeFloor"
@@ -40,19 +40,19 @@ ref="viewer"
           <v-col cols="12" md="6">
             <v-card class="upload-section rounded-card">
               <div class="drag-and-drop" style="width: 100%;">
-                <file-upload-component 
+                <file-uploader 
                     v-if="viewerReady" 
                     :viewer="viewerComponent" 
                     @file-uploaded="handleFileUpload">
-              </file-upload-component>
+              </file-uploader>
                 
               <div class="calculate-button" v-if="fileUploaded">
-             <PriceQuotationComponent
+             <PriceQuotation
               :volumeInMilliliters="volumeInMilliliters"
               :selectedHeight="selectedHeight"
               :originalDimensions="originalDimensions"
               @update:selectedHeight="handleHeightUpdate" >
-  </PriceQuotationComponent></div>
+  </PriceQuotation></div>
   
 
               </div>
@@ -66,19 +66,19 @@ ref="viewer"
 
 <script>
 // import * as THREE from 'three'; 
-import FileUploadComponent from './components/FileUploadComponent.vue';
-import ViewerComponent from './components/3DViewerComponent.vue';
-import PriceQuotationComponent from './components/PriceQuotationComponent.vue';
-import ChangeElementsComponent from './components/ChangeElementsComponent.vue';
+import FileUploader from './components/FileUpload.vue';
+import ViewerComponent from './components/3DViewer.vue';
+import PriceQuotation from './components/PriceQuotation.vue';
+import AdminPanel from './components/AdminPanel.vue';
 
 
 
 export default {
   components: {
-    FileUploadComponent,
+    FileUploader,
     ViewerComponent,
-    PriceQuotationComponent,
-    ChangeElementsComponent
+    PriceQuotation,
+    AdminPanel,
   },
   data() {
     return {
